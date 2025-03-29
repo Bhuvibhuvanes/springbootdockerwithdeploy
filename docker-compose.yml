@@ -1,0 +1,78 @@
+#version: '3.8'
+#services:
+#  app:
+#    image: my-springboot-app
+#    ports:
+#      - "8080:8080"
+#    depends_on:
+#      postgres:
+#        condition: service_healthy
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/student
+#      SPRING_DATASOURCE_USERNAME: postgres
+#      SPRING_DATASOURCE_PASSWORD: postgresql
+#    restart: always
+#    networks:
+#      - my-network
+#
+#  postgres:
+#    image: postgres:15
+#    container_name: my-postgres-springboot
+#    environment:
+#      POSTGRES_DB: student
+#      POSTGRES_USER: postgres
+#      POSTGRES_PASSWORD: postgresql
+#    ports:
+#      - "5432:5432"
+#    restart: always
+#    networks:
+#      - my-network
+#    healthcheck:
+#      test: ["CMD-SHELL", "pg_isready -U postgres -d student"]
+#      interval: 10s
+#      timeout: 5s
+#      retries: 5
+#
+#networks:
+#  my-network:
+#    driver: bridge
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/student
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgresql
+    restart: always
+    networks:
+      - my-network
+
+  postgres:
+    image: postgres:15
+    container_name: my-postgres-springboot
+    environment:
+      POSTGRES_DB: student
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgresql
+    ports:
+      - "5431:5432"
+    restart: always
+    networks:
+      - my-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d student"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  my-network:
+    driver: bridge
+
